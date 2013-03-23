@@ -34,8 +34,8 @@ class PublicKey(object):
         """Load RSA PublicKey from a JSON Web Key"""
         if jwk['kty'] != cls.KTY:
             raise ValueError("Not a {0} key".format(cls.KTY))
-        n = b64_to_int(jwk['n'])
-        e = b64_to_int(jwk['e'])
+        n = b64_to_int(as_binary(jwk['n']))
+        e = b64_to_int(as_binary(jwk['e']))
         return cls(n, e)
     
     def to_jwk(self):
