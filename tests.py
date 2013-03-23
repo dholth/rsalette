@@ -31,6 +31,10 @@ def test_bad_key():
 # (the python-rsa library was used to extract the public key)
 
 def test_signature():
+    for digest in 'sha256', 'sha384', 'sha512':
+        _test_signature(digest)
+        
+def _test_signature(digest='sha256'):
     our_pubkey = rsalette.PublicKey.from_jwk(keys[0])
     here = os.path.abspath(os.path.dirname(__file__))
     with tempfile.NamedTemporaryFile() as temp_message:
@@ -39,7 +43,7 @@ def test_signature():
             temp_message.write(message)
             temp_message.flush()
             # pkcs signing with openssl    
-            subprocess.call(['openssl', 'dgst', '-sha256', 
+            subprocess.call(['openssl', 'dgst', '-' + digest, 
                              '-sign', os.path.join(here, 'test_private.pem'),
                              '-out', temp_signature.name,
                              temp_message.name])            

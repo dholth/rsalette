@@ -9,18 +9,15 @@ import re
 
 __all__ = ['PublicKey']
 
-# Important to make sure these values have no regex special characters:
-ASN1_HASH = {
-    b'\x30\x31\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x01\x05\x00\x04\x20' : 'sha256',
-    b'\x30\x41\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x02\x05\x00\x04\x30' : 'sha384',
-    b'\x30\x51\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x03\x05\x00\x04\x40' : 'sha512'
-}
-
+ASN1_HASH = {b'0Q0\r\x06\t`\x86H\x01e\x03\x04\x02\x03\x05\x00\x04@': 'sha512', 
+             b'0A0\r\x06\t`\x86H\x01e\x03\x04\x02\x02\x05\x00\x040': 'sha384', 
+             b'010\r\x06\t`\x86H\x01e\x03\x04\x02\x01\x05\x00\x04 ': 'sha256'}
+             
 pkcs_regex = (b'\x01\xff+\x00(?P<algorithm>' +
-              b'|'.join(ASN1_HASH.keys()) +
-              b')(?P<hash>.*)$')
+              b'|'.join(sorted(re.escape(asn1) for asn1 in ASN1_HASH.keys())) +
+              b')(?P<hash>.+)')
 
-pkcs_signature = re.compile(pkcs_regex)
+pkcs_signature = re.compile(pkcs_regex, re.DOTALL)
 
 class PublicKey(object):
     KTY = "RSA"
