@@ -18,7 +18,6 @@ def parse_der(der):
     next = iter(der).next
     return _parse(next)
 
-
 def _parse(next):
     # Type tag
     ttag = next()
