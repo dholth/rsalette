@@ -11,17 +11,18 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 tests_require = ["nose", "coverage"]
 
 setup(name='rsalette',
-      version='0.0.1',
+      version='0.1.0',
       description='A pure-Python 2+3 RSA verification library.',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
             "Topic :: Security :: Cryptography",
+            "License :: OSI Approved :: Apache Software License",
         ],
       author='Daniel Holth',
       author_email='dholth@fastmail.fm',
       url='http://bitbucket.org/dholth/rsalette/',
       keywords='',
-      license='MIT',
+      license='ASL 2',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
