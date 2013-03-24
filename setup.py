@@ -1,8 +1,6 @@
 import os
-import sys
 
-from setuptools import setup, find_packages
-from distutils.core import Extension
+from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
@@ -21,13 +19,12 @@ setup(name='rsalette',
       author='Daniel Holth',
       author_email='dholth@fastmail.fm',
       url='http://bitbucket.org/dholth/rsalette/',
-      keywords='',
+      keywords='rsa',
       license='ASL 2',
-      packages=find_packages(),
+      py_modules=['rsalette'],
       include_package_data=True,
       zip_safe=False,
       tests_require = tests_require,
       extras_require = dict(test=tests_require),
       test_suite = 'nose.collector',
       )
-
