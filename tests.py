@@ -1,7 +1,6 @@
 import rsalette
 import subprocess
 import json
-import tempfile
 import os.path
 
 from nose.tools import eq_, raises
