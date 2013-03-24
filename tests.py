@@ -12,7 +12,7 @@ keys = [
          'n': 'tbg-f-iI33OW7Pll0eah8mmAz-5kQWntKRzP3Bd3dB93523t0ZQEhS17wR4TLOgKBGDGhncMvWUH53-pPWxkDanPXpQ53mK4McQfA6PE__XrgUI_DfpuK-46HJecJnyKcghrSUKkKAM9ZU46zVRsmr84t8IKBwRwzdqfOT3UJEbB3ktqw-1UNsz0ZmBAeZXnETbBGwSo3tTeHOVq0E6kYqmlaO0Eu1jfN8mxLhc1x7_9osjsbO0pkJTchdaVBl7MLpmYNfwlh3eAzir__avGXetJa9fpsP2KAG0_6OSlTh2MzwyuTRTqmU0rQQOHscqoM8VubFH5odRcca3lHFFb0Q'}
        ]
 
-pem = """
+pem = b"""
 
 -----BEGIN RSA PUBLIC KEY-----
 MIIBCgKCAQEAtbg+f+iI33OW7Pll0eah8mmAz+5kQWntKRzP3Bd3dB93523t0ZQE
