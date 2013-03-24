@@ -15,42 +15,40 @@ def parse_pem(pem):
 
 def parse_der(der):
     """Parse ASN.1 from an iterable yielding DER bytes."""
-    next = iter(der).next
-    return _parse(next)
+    return _parse(iter(der))
 
-def _parse(next):
+def _parse(der):
     # Type tag
-    ttag = next()
+    ttag = next(der)
     if not ttag in (0x30, 0x02):
         raise ValueError("Unsupported tag %x" % ttag)
     
     # The variable-length length field.
-    llen = next()
+    llen = next(der)
     if not llen & 0x80:
         length = llen
     else:
         length = 0
         for i in range(llen ^ 0x80):
             length <<= 8
-            length += next()
+            length += next(der)
 
-    body = (next() for i in range(length))
+    body = (next(der) for i in range(length))
 
     if ttag == 0x30: # SEQUENCE
-        bnext = iter(body).next
         def seqbody():
             while True:
-                yield _parse(bnext)
+                yield _parse(body)
         items = list(seqbody())
         return items
     elif ttag == 0x02: # INTEGER
         return int(hexlify(bytearray(body)), 16)
 
 def pem_to_bytearrays(pem):
-    line = pem.next()
+    line = next(pem)
     while not line.startswith(b'-----BEGIN'):
-        line = pem.next()
-    line = pem.next()
+        line = next(pem)
+    line = next(pem)
     while not line.startswith(b'-----END'):
         yield bytearray(b64decode(line))
-        line = pem.next()
+        line = next(pem)
