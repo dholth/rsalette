@@ -9,7 +9,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 tests_require = ["nose", "coverage"]
 
 setup(name='rsalette',
-      version='0.1.0',
+      version='0.2.0',
       description='A pure-Python 2+3 RSA verification library.',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
