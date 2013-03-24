@@ -77,6 +77,7 @@ class PublicKey(object):
     def __repr__(self):
         return "{0}(n={1},e={2})".format(self.__class__.__name__, self.n, self.e)
 
+
 def decrypt(ciphertext, pub):
     """RSA decryption on integers"""
     return pow(ciphertext, pub.e, pub.n)
