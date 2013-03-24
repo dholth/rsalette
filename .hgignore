@@ -6,6 +6,7 @@ syntax: glob
 *.so
 .*project
 .coverage
+.settings
 .tox
 
 syntax: regexp

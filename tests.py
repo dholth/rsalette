@@ -34,20 +34,31 @@ def test_signature():
     for digest in 'sha256', 'sha384', 'sha512':
         _test_signature(digest)
         
+def sign_with_openssl(message, key_filename, digest='sha256'):
+    """Sign message with openssl, returning the signature.
+    
+    message: the message in bytes
+    key_filename: path to a PEM-format RSA private key
+    digest: digest algorithm (see 'openssl dgst' for legal values)
+    """
+    command = ['openssl', 'dgst', '-' + digest, '-sign', key_filename, '-binary']
+    openssl = subprocess.Popen(command, 
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    output = openssl.communicate(message)
+    rc = openssl.wait()
+    if rc != 0:
+        raise subprocess.CalledProcessError(rc, ' '.join(command), output[1])
+    return output[0]
+
 def _test_signature(digest='sha256'):
     our_pubkey = rsalette.PublicKey.from_jwk(keys[0])
     here = os.path.abspath(os.path.dirname(__file__))
-    with tempfile.NamedTemporaryFile() as temp_message:
-        with tempfile.NamedTemporaryFile() as temp_signature:
-            message = json.dumps(keys[0]).encode('utf-8')
-            temp_message.write(message)
-            temp_message.flush()
-            # pkcs signing with openssl    
-            subprocess.call(['openssl', 'dgst', '-' + digest, 
-                             '-sign', os.path.join(here, 'test_private.pem'),
-                             '-out', temp_signature.name,
-                             temp_message.name])            
-            signature = temp_signature.read()
+    
+    message = json.dumps(keys[0]).encode('utf-8')
+    signature = sign_with_openssl(message, os.path.join(here, 'test_private.pem'), digest)
+    
     verified_message = our_pubkey.verify(message, signature)
     eq_(verified_message, message)
     
