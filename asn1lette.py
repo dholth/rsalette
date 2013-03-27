@@ -44,9 +44,11 @@ def _parse(der):
         return items
     elif ttag == 0x02: # INTEGER
         return int(hexlify(bytearray(body)), 16)
+    elif ttag in (0x04, 0x03): # OCTET STRING, BIT STRING
+        return bytearray(body)
     elif constructed:
         return (ttag, ttype, tcls, constructed, _parse(body))
-    else: # 0x04 OCTET STRING; 0x03 BIT STRING; ...
+    else:
         return (ttag, ttype, tcls, constructed, bytearray(body))
 
 def pem_to_bytearrays(pem):

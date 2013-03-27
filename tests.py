@@ -23,11 +23,35 @@ kJTchdaVBl7MLpmYNfwlh3eAzir//avGXetJa9fpsP2KAG0/6OSlTh2MzwyuTRTq
 mU0rQQOHscqoM8VubFH5odRcca3lHFFb0QIDAQAB
 -----END RSA PUBLIC KEY-----"""
 
+ec_pem = b"""
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIB439n9KipyhXSmf8F9TWgOPFYj46woOmvkgUxcOeqheoAcGBSuBBAAK
+oUQDQgAE5tG+pwfXBazh6HY8/Hs/j4cW0gcw485nUkoR3cgxNyAbY9tXsMAJMEIr
+47LwqNpXKgufNoBL6Nmjg6WF5Bon4Q==
+-----END EC PRIVATE KEY-----
+"""
+
 def test_asn1lette():
     pk = rsalette.PublicKey(*asn1lette.parse_pem(iter(pem.splitlines())))
     eq_(pk.to_jwk(), keys[0])
 
-@raises(ValueError)
+def test_ec_pem():
+    """Not going to implement ECDSA any time soon, but we can sortof parse
+    their private keys...
+        
+       ECPrivateKey ::= SEQUENCE {
+         version        INTEGER { ecPrivkeyVer1(1) } (ecPrivkeyVer1),
+         privateKey     OCTET STRING,
+         parameters [0] ECParameters {{ NamedCurve }} OPTIONAL,
+         publicKey  [1] BIT STRING OPTIONAL
+       }
+    """
+    curves = { b'+\x81\x04\x00\n' : 'P-256' }
+    asn1 = asn1lette.parse_pem(iter(ec_pem.splitlines()))
+    assert asn1[0] == 1
+    ec_key = { "kty" : "EC", "d" : asn1[1], "crv" : curves[bytes(asn1[2][-1][-1])] }
+
+@raises(StopIteration) # ? bad exception handling
 def test_asn1lette_fail():
     asn1lette.parse_der(bytearray(b'\x32'))
 
