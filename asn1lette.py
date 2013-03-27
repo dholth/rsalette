@@ -60,7 +60,7 @@ def pem_to_bytearrays(pem):
         yield bytearray(b64decode(line))
         line = next(pem)
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma nocover
     import sys, pprint
     pprint.pprint(parse_pem(sys.stdin))
     
