@@ -20,8 +20,9 @@ def parse_der(der):
 def _parse(der):
     # Type tag
     ttag = next(der)
-    if not ttag in (0x30, 0x02):
-        raise ValueError("Unsupported tag %x" % ttag)
+    ttype = ttag & 0x1f
+    tcls = (ttag & 0b11000000) >> 6 
+    constructed = bool((ttag & 0b100000) >> 5)
     
     # The variable-length length field.
     llen = next(der)
@@ -43,6 +44,10 @@ def _parse(der):
         return items
     elif ttag == 0x02: # INTEGER
         return int(hexlify(bytearray(body)), 16)
+    elif constructed:
+        return (ttag, ttype, tcls, constructed, _parse(body))
+    else: # 0x04 OCTET STRING; 0x03 BIT STRING; ...
+        return (ttag, ttype, tcls, constructed, bytearray(body))
 
 def pem_to_bytearrays(pem):
     line = next(pem)
@@ -52,3 +57,8 @@ def pem_to_bytearrays(pem):
     while not line.startswith(b'-----END'):
         yield bytearray(b64decode(line))
         line = next(pem)
+
+if __name__ == "__main__":
+    import sys, pprint
+    pprint.pprint(parse_pem(sys.stdin))
+    
