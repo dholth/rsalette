@@ -4,10 +4,9 @@ syntax: glob
 *.orig
 *.egg
 *.so
-.*project
-.coverage
-.settings
-.tox
+.*
+rsalette-*
+PKG-INFO
 
 syntax: regexp
 
