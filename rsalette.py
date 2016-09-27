@@ -150,6 +150,6 @@ def verify_jwt(token, jwks):
 
     Return decoded payload.
     """
-    verified = _verify_jws(token, jwks)
+    verified = _verify_jwt(token, jwks)
     header, _, payload = verified.partition('.')
     return json.loads(urlsafe_b64decode(payload))
