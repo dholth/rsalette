@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2013 Daniel Holth <dholth@gmail.com>
+# Copyright 2013-2016 Daniel Holth <dholth@gmail.com>
 # Based on python-rsa copyright 2011 Sybren A. Stüvel <sybren@stuvel.eu>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ import hashlib
 import json
 import re
 
-__all__ = ['PublicKey']
+__all__ = ['PublicKey', 'BadSignatureError', 'verify_jwt']
 
 ASN1_HASH = {b'0Q0\r\x06\t`\x86H\x01e\x03\x04\x02\x03\x05\x00\x04@': 'sha512', 
              b'0A0\r\x06\t`\x86H\x01e\x03\x04\x02\x02\x05\x00\x040': 'sha384', 

@@ -6,7 +6,14 @@ Compact pure-Python RSA verification.
 rsalette provides a compact, < 200 lines, pure-Python 2+3, single file
 RSA verification library that is compatible with JSON Web Key.
 
-rsalette is alpha quality software.
+It includes a JSON Web Signature (JWS) / JSON Web Token (JWT)
+verifier that can be used for OpenID Connect.
+
+It includes asn1lette, a limited asn.1 parser that can parse RSA public
+keys from PEM or DER data.
+
+rsalette comes with no warranty, but if you'd like to do an audit,
+it's short.
 
 Usage::
 
