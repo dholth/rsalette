@@ -28,3 +28,6 @@ sdist_source=File(['PKG-INFO', 'SConstruct', 'pyproject.toml']) \
 sdist = env.SDist(source=sdist_source)
 env.NoClean(sdist)
 env.Alias('sdist', sdist)
+
+# needed for pep517 (enscons.api) to work
+env.Default(whl, sdist)
