@@ -1,7 +1,5 @@
 # Starter SConstruct for enscons
 
-import sys
-from distutils import sysconfig
 import pytoml as toml
 import enscons
 
